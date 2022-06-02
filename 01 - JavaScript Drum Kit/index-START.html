@@ -59,6 +59,34 @@
 
 <script>
 
+  function playSound(e) {
+    // Add item tied to data-key
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    // Add animation tied to data-key
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    // Stop function from running if no audio
+    if (!audio) return;
+    // Rewinds audio to start over when key is hit multiple times
+    audio.currentTime = 0;
+    // Play if theres audio
+    audio.play();
+    // Add playing class from style.css
+    key.classList.add('playing');
+  }
+
+  function removeTransition(e) {
+    // Skip everything other than transform
+    if(e.propertyName != 'transform') return;
+    this.classList.remove('playing');
+  }
+
+  // Select all keys on page bc we want to listen for it on each one
+  const keys = document.querySelectorAll('.key');
+  // Use transition end event that will fire when thing has stopped
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+  window.addEventListener('keydown', playSound);
+  
 </script>
 
 
